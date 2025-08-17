@@ -1,0 +1,2 @@
+C:/Users/amirm/Documents/new_flutter/koooly_app/android/app/.cxx/Debug/1i451b1k/x86/CMakeFiles/edit_cache.dir
+C:/Users/amirm/Documents/new_flutter/koooly_app/android/app/.cxx/Debug/1i451b1k/x86/CMakeFiles/rebuild_cache.dir

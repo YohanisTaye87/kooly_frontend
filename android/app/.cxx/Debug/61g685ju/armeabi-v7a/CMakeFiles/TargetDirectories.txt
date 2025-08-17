@@ -1,0 +1,2 @@
+C:/Users/nhatt/Documents/GitHub/koooly_app/android/app/.cxx/Debug/61g685ju/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/nhatt/Documents/GitHub/koooly_app/android/app/.cxx/Debug/61g685ju/armeabi-v7a/CMakeFiles/rebuild_cache.dir

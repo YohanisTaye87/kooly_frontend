@@ -1,0 +1,127 @@
+{
+  "project_info": {
+    "project_number": "615505091780",
+    "firebase_url": "https://last-d84e4-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "last-d84e4",
+    "storage_bucket": "last-d84e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615505091780:android:4ee4d608f54777ec12fd91",
+        "android_client_info": {
+          "package_name": "com.koooly.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL7FX7tPqp21VzEAFOvuR9BZd_JjsxVYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615505091780:android:800da7fa13ac574e12fd91",
+        "android_client_info": {
+          "package_name": "com.koooly.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL7FX7tPqp21VzEAFOvuR9BZd_JjsxVYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615505091780:android:a7bca2f1118944af12fd91",
+        "android_client_info": {
+          "package_name": "com.koooly.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL7FX7tPqp21VzEAFOvuR9BZd_JjsxVYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615505091780:android:f27adbcd0684726c12fd91",
+        "android_client_info": {
+          "package_name": "com.nattyalem.koooly.console"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL7FX7tPqp21VzEAFOvuR9BZd_JjsxVYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615505091780-c2bdreppsp2mkeggi0b84lbb3p6i5sfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
