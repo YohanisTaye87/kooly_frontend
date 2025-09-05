@@ -25,11 +25,13 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
             height: double.infinity,
             color: const Color(0xFFE5EFFF),
             child: Center(
-              child: Icon(Icons.map, color: Colors.blueGrey, size: 120 * width / 375.0),
+              child: Icon(Icons.map,
+                  color: Colors.blueGrey, size: 120 * width / 375.0),
             ),
           ),
           // Draggable bottom sheet
           DraggableScrollableSheet(
+            key: const ValueKey('final_delivery_sheet'),
             initialChildSize: 0.45,
             minChildSize: 0.25,
             maxChildSize: 0.95,
@@ -37,7 +39,8 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24 * width / 375.0)),
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(24 * width / 375.0)),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -45,7 +48,8 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                   ),
                 ],
               ),
-              padding: EdgeInsets.fromLTRB(20 * width / 375.0, 10 * width / 375.0, 20 * width / 375.0, 24 * width / 375.0),
+              padding: EdgeInsets.fromLTRB(20 * width / 375.0,
+                  10 * width / 375.0, 20 * width / 375.0, 24 * width / 375.0),
               child: ListView(
                 controller: scrollController,
                 shrinkWrap: true,
@@ -54,7 +58,8 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                     child: Container(
                       width: 40 * width / 375.0,
                       height: 5 * width / 375.0,
-                      margin: EdgeInsets.only(bottom: 18 * width / 375.0, top: 6 * width / 375.0),
+                      margin: EdgeInsets.only(
+                          bottom: 18 * width / 375.0, top: 6 * width / 375.0),
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(10 * width / 375.0),
@@ -67,26 +72,42 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                       CircleAvatar(
                         radius: 22 * scale,
                         backgroundColor: const Color(0xFFD9D9D9),
-                        child: Icon(Icons.person, color: Colors.white, size: 28 * scale),
+                        child: Icon(Icons.person,
+                            color: Colors.white, size: 28 * scale),
                       ),
                       SizedBox(width: 12 * scale),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Leul Damtew', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 16 * scale)),
+                          Text('Leul Damtew',
+                              style: TextStyle(
+                                  fontFamily: 'Lora',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16 * scale)),
                           Row(
                             children: [
-                              Text('Grey', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale, color: const Color(0xFF757575))),
+                              Text('Grey',
+                                  style: TextStyle(
+                                      fontFamily: 'Lora',
+                                      fontSize: 14 * scale,
+                                      color: const Color(0xFF757575))),
                               SizedBox(width: 12 * scale),
-                              Text('1421', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale, color: const Color(0xFF757575))),
+                              Text('1421',
+                                  style: TextStyle(
+                                      fontFamily: 'Lora',
+                                      fontSize: 14 * scale,
+                                      color: const Color(0xFF757575))),
                             ],
                           ),
                         ],
                       ),
                       const Spacer(),
-                      Icon(Icons.star, color: const Color(0xFFFF9800), size: 20 * scale),
+                      Icon(Icons.star,
+                          color: const Color(0xFFFF9800), size: 20 * scale),
                       SizedBox(width: 4 * scale),
-                      Text('4.2', style: TextStyle(fontFamily: 'Lora', fontSize: 16 * scale)),
+                      Text('4.2',
+                          style: TextStyle(
+                              fontFamily: 'Lora', fontSize: 16 * scale)),
                     ],
                   ),
                   SizedBox(height: 18 * scale),
@@ -94,20 +115,26 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                   // From/To
                   Row(
                     children: [
-                      Icon(Icons.my_location, color: const Color(0xFF757575), size: 20 * scale),
+                      Icon(Icons.my_location,
+                          color: const Color(0xFF757575), size: 20 * scale),
                       SizedBox(width: 8 * scale),
                       Expanded(
-                        child: Text('From\nBole, Addis Ababa', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale)),
+                        child: Text('From\nBole, Addis Ababa',
+                            style: TextStyle(
+                                fontFamily: 'Lora', fontSize: 14 * scale)),
                       ),
                     ],
                   ),
                   SizedBox(height: 6 * scale),
                   Row(
                     children: [
-                      Icon(Icons.location_on_outlined, color: const Color(0xFF757575), size: 20 * scale),
+                      Icon(Icons.location_on_outlined,
+                          color: const Color(0xFF757575), size: 20 * scale),
                       SizedBox(width: 8 * scale),
                       Expanded(
-                        child: Text('To\nSummit, Addis Ababa', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale)),
+                        child: Text('To\nSummit, Addis Ababa',
+                            style: TextStyle(
+                                fontFamily: 'Lora', fontSize: 14 * scale)),
                       ),
                     ],
                   ),
@@ -116,20 +143,34 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                   // Delivery Status
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Delivery Status', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 15 * scale)),
+                    child: Text('Delivery Status',
+                        style: TextStyle(
+                            fontFamily: 'Lora',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15 * scale)),
                   ),
                   SizedBox(height: 8 * scale),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.play_circle_fill, color: const Color(0xFFFF9800), size: 32 * scale),
+                      Icon(Icons.play_circle_fill,
+                          color: const Color(0xFFFF9800), size: 32 * scale),
                       SizedBox(width: 10 * scale),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('On the way', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 15 * scale)),
-                            Text('The package is currently being delivered & is on it\'s way.', style: TextStyle(fontFamily: 'Lora', fontSize: 13 * scale, color: const Color(0xFF757575))),
+                            Text('On the way',
+                                style: TextStyle(
+                                    fontFamily: 'Lora',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15 * scale)),
+                            Text(
+                                'The package is currently being delivered & is on it\'s way.',
+                                style: TextStyle(
+                                    fontFamily: 'Lora',
+                                    fontSize: 13 * scale,
+                                    color: const Color(0xFF757575))),
                           ],
                         ),
                       ),
@@ -139,14 +180,24 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.check_circle, color: const Color(0xFFFF9800), size: 32 * scale),
+                      Icon(Icons.check_circle,
+                          color: const Color(0xFFFF9800), size: 32 * scale),
                       SizedBox(width: 10 * scale),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Delivered', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 15 * scale)),
-                            Text('The package has arrived and has been successfully delivered.', style: TextStyle(fontFamily: 'Lora', fontSize: 13 * scale, color: const Color(0xFF757575))),
+                            Text('Delivered',
+                                style: TextStyle(
+                                    fontFamily: 'Lora',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15 * scale)),
+                            Text(
+                                'The package has arrived and has been successfully delivered.',
+                                style: TextStyle(
+                                    fontFamily: 'Lora',
+                                    fontSize: 13 * scale,
+                                    color: const Color(0xFF757575))),
                           ],
                         ),
                       ),
@@ -157,31 +208,49 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                   // Payment
                   Row(
                     children: [
-                      Icon(Icons.attach_money, color: const Color(0xFF4CAF50), size: 28 * scale),
+                      Icon(Icons.attach_money,
+                          color: const Color(0xFF4CAF50), size: 28 * scale),
                       SizedBox(width: 8 * scale),
-                      Text('Cash', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 15 * scale)),
+                      Text('Cash',
+                          style: TextStyle(
+                              fontFamily: 'Lora',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15 * scale)),
                       const Spacer(),
-                      Text('100ETB', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 15 * scale)),
+                      Text('100ETB',
+                          style: TextStyle(
+                              fontFamily: 'Lora',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15 * scale)),
                     ],
                   ),
                   SizedBox(height: 18 * scale),
                   // Rate your ride
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Rate your ride', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 15 * scale)),
+                    child: Text('Rate your ride',
+                        style: TextStyle(
+                            fontFamily: 'Lora',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15 * scale)),
                   ),
                   SizedBox(height: 8 * scale),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) => IconButton(
-                      icon: Icon(
-                        Icons.star,
-                        color: index < _rating ? const Color(0xFFFF9800) : const Color(0xFFD9D9D9),
-                        size: 32 * scale,
-                      ),
-                      onPressed: () => setState(() => _rating = index + 1),
-                      splashRadius: 20 * scale,
-                    )),
+                    children: List.generate(
+                        5,
+                        (index) => IconButton(
+                              icon: Icon(
+                                Icons.star,
+                                color: index < _rating
+                                    ? const Color(0xFFFF9800)
+                                    : const Color(0xFFD9D9D9),
+                                size: 32 * scale,
+                              ),
+                              onPressed: () =>
+                                  setState(() => _rating = index + 1),
+                              splashRadius: 20 * scale,
+                            )),
                   ),
                   SizedBox(height: 10 * scale),
                   // Rate button
@@ -195,7 +264,13 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                           borderRadius: BorderRadius.circular(8 * scale),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (mounted) {
+                          // Add rating functionality here
+                          debugPrint('Rating submitted: $_rating stars');
+                          // You can add navigation or API calls here
+                        }
+                      },
                       child: Text(
                         'Rate',
                         style: TextStyle(
@@ -219,7 +294,11 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                         ),
                         padding: EdgeInsets.symmetric(vertical: 14 * scale),
                       ),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        if (mounted && context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      },
                       child: Text(
                         'Cancel',
                         style: TextStyle(
@@ -254,8 +333,13 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
                   ],
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.chevron_left, color: Colors.black87, size: 30),
-                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.chevron_left,
+                      color: Colors.black87, size: 30),
+                  onPressed: () {
+                    if (mounted && context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  },
                   tooltip: 'Back',
                 ),
               ),
@@ -274,4 +358,4 @@ class _FinalDeliveryScreenState extends State<FinalDeliveryScreen> {
       ),
     );
   }
-} 
+}

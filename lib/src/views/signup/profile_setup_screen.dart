@@ -371,7 +371,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   color: const Color(0xFFFAF8F4),
                 ),
                 child: DropdownButtonFormField<String>(
-                  initialValue: _selectedGender,
+                  value: _selectedGender,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person, color: Color(0xFF757575)),
                     hintText: 'Gender',

@@ -12,6 +12,7 @@ import 'package:koooly_app/src/cubit/user_state.dart';
 import 'package:koooly_app/src/shared/cache_storage.dart';
 import 'package:koooly_app/src/shared/constants.dart';
 import 'package:koooly_app/src/views/home/main_home.dart';
+import 'package:koooly_app/src/views/home/ride_tracking_screen.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -376,7 +377,7 @@ class _RouteScreen extends State<RouteScreen> {
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      const MainHome(),
+                      const RideTrackingScreen(),
                   transitionDuration: const Duration(milliseconds: 150),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
@@ -1381,8 +1382,10 @@ class _RouteScreen extends State<RouteScreen> {
                         // Fourth card: Driver accepted/started state using reusable component
                         else if (state.user.ride != null &&
                             state.user.ride!['status'] != null &&
-                            (state.user.ride!['status'].toLowerCase() == 'started' ||
-                                state.user.ride!['status'].toLowerCase() == 'accepted'))
+                            (state.user.ride!['status'].toLowerCase() ==
+                                    'started' ||
+                                state.user.ride!['status'].toLowerCase() ==
+                                    'accepted'))
                           RideStatusCard(
                             state: state,
                             onCancel: () async {
@@ -1420,11 +1423,13 @@ class _RouteScreen extends State<RouteScreen> {
                                                   ),
                                                 ),
                                                 value: selectedReasons[reason],
-                                                activeColor: const Color(0xFFFF9800),
+                                                activeColor:
+                                                    const Color(0xFFFF9800),
                                                 checkColor: Colors.white,
                                                 onChanged: (bool? value) {
                                                   setDialogState(() {
-                                                    selectedReasons[reason] = value ?? false;
+                                                    selectedReasons[reason] =
+                                                        value ?? false;
                                                   });
                                                 },
                                               );
@@ -1436,7 +1441,8 @@ class _RouteScreen extends State<RouteScreen> {
                                     actions: [
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          foregroundColor: const Color(0xFF757575),
+                                          foregroundColor:
+                                              const Color(0xFF757575),
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 20,
                                             vertical: 12,
@@ -1455,50 +1461,64 @@ class _RouteScreen extends State<RouteScreen> {
                                       ),
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFFFF9800),
+                                          backgroundColor:
+                                              const Color(0xFFFF9800),
                                           foregroundColor: Colors.white,
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 24,
                                             vertical: 12,
                                           ),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                           ),
                                           elevation: 2,
                                         ),
                                         onPressed: () async {
-                                          bool hasSelectedReason = selectedReasons.values.any((selected) => selected);
+                                          bool hasSelectedReason =
+                                              selectedReasons.values
+                                                  .any((selected) => selected);
                                           if (!hasSelectedReason) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
                                               const SnackBar(
-                                                content: Text('Please select at least one reason for cancellation'),
+                                                content: Text(
+                                                    'Please select at least one reason for cancellation'),
                                                 backgroundColor: Colors.red,
                                               ),
                                             );
                                             return;
                                           }
 
-                                          List<String> selectedReasonsList = selectedReasons.entries
-                                              .where((entry) => entry.value)
-                                              .map((entry) => entry.key)
-                                              .toList();
+                                          List<String> selectedReasonsList =
+                                              selectedReasons.entries
+                                                  .where((entry) => entry.value)
+                                                  .map((entry) => entry.key)
+                                                  .toList();
 
                                           String currentRideId = '';
-                                          if (state.user.ride != null && state.user.ride!['_id'] != null) {
-                                            currentRideId = state.user.ride!['_id'];
+                                          if (state.user.ride != null &&
+                                              state.user.ride!['_id'] != null) {
+                                            currentRideId =
+                                                state.user.ride!['_id'];
                                           }
 
                                           if (currentRideId.isNotEmpty) {
-                                            final result = await _cancelRide(currentRideId, selectedReasonsList);
-                                            if (result == 200 || result == 218) {
+                                            final result = await _cancelRide(
+                                                currentRideId,
+                                                selectedReasonsList);
+                                            if (result == 200 ||
+                                                result == 218) {
                                               if (context.mounted) {
                                                 Navigator.of(context).pop();
                                               }
                                             } else {
                                               if (context.mounted) {
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
                                                   const SnackBar(
-                                                    content: Text('Failed to cancel ride. Please try again.'),
+                                                    content: Text(
+                                                        'Failed to cancel ride. Please try again.'),
                                                     backgroundColor: Colors.red,
                                                   ),
                                                 );

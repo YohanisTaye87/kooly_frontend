@@ -133,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 14),
               DropdownButtonFormField<String>(
-                initialValue: _selectedGender,
+                value: _selectedGender,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.wc, color: Color(0xFF757575)),
                   hintText: 'Gender',

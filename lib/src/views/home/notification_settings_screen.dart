@@ -91,7 +91,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                       );
                     }
                   },
-                  activeThumbColor: Colors.blue,
+                  // activeThumbColor: Colors.blue,
                   inactiveThumbColor: Colors.grey,
                 ),
               ],

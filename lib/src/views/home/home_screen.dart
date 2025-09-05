@@ -15,6 +15,7 @@ import 'package:koooly_app/src/shared/constants.dart';
 import 'package:koooly_app/src/views/home/address_screen.dart';
 import 'package:koooly_app/src/views/home/menu_drawer.dart';
 import 'package:koooly_app/src/views/home/wallet_screen.dart';
+import 'package:koooly_app/src/views/home/ride_tracking_screen.dart';
 import 'package:flutter/services.dart';
 
 import 'package:latlong2/latlong.dart';
@@ -274,6 +275,34 @@ class _HomeScreen extends State<HomeScreen>
             ),
           );
         } else if (state is UserLoaded) {
+          // Check if there's an active ride and navigate to tracking screen
+          if (state.user.ride != null) {
+            final rideStatus =
+                state.user.ride!['status'].toString().toLowerCase();
+            if (rideStatus == 'accepted' ||
+                rideStatus == 'started' ||
+                rideStatus == 'ongoing') {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const RideTrackingScreen(),
+                    transitionDuration: const Duration(milliseconds: 150),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                  ),
+                );
+              });
+              return const Scaffold(
+                body: Center(
+                    child: CircularProgressIndicator(color: kPrimaryColor)),
+              );
+            }
+          }
+
           return Scaffold(
               drawer: const MenuDrawer(),
               bottomSheet: state.user.ride != null &&

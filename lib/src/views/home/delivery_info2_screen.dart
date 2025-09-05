@@ -208,7 +208,7 @@ class _DeliveryInfo2ScreenState extends State<DeliveryInfo2Screen> {
                   Switch(
                     value: _isFragile,
                     onChanged: (val) => setState(() => _isFragile = val),
-                    activeThumbColor: const Color(0xFFFF9800),
+                    // activeThumbColor: const Color(0xFFFF9800),
                   ),
                 ],
               ),

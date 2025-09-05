@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class RideStatusCard extends StatelessWidget {
   final UserLoaded state;
   final VoidCallback? onCancel;
-  
+
   const RideStatusCard({
     super.key,
     required this.state,
@@ -23,14 +23,17 @@ class RideStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rideStatus = state.user.ride?['status']?.toString().toLowerCase();
-    
+
     if (rideStatus == 'started') {
       return _buildStartedRideCard();
     } else if (rideStatus == 'accepted') {
       return _buildAcceptedRideCard(context);
+    } else if (rideStatus == 'pending') {
+      return _buildPendingRideCard();
     }
-    
-    return const SizedBox.shrink();
+
+    // Show a default card for other statuses
+    return _buildDefaultRideCard(rideStatus);
   }
 
   Widget _buildStartedRideCard() {
@@ -71,7 +74,9 @@ class RideStatusCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.user.ride!["driverInfo"]["carType"]["vehicleType"] ?? "Standard",
+                      state.user.ride!["driverInfo"]["carType"]
+                              ["vehicleType"] ??
+                          "Standard",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -156,7 +161,8 @@ class RideStatusCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        state.user.ride!["riderId"]["userId"]?["name"] ?? "Driver",
+                        state.user.ride!["riderId"]["userId"]?["name"] ??
+                            "Driver",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -275,7 +281,9 @@ class RideStatusCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.user.ride!["driverInfo"]["carType"]["vehicleType"] ?? "Standard",
+                      state.user.ride!["driverInfo"]["carType"]
+                              ["vehicleType"] ??
+                          "Standard",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -340,7 +348,8 @@ class RideStatusCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.user.ride != null && state.user.ride!["riderId"] != null
+                      state.user.ride != null &&
+                              state.user.ride!["riderId"] != null
                           ? "${state.user.ride!["riderId"]["userId"]?["name"]}"
                           : "Driver",
                       style: const TextStyle(
@@ -379,7 +388,8 @@ class RideStatusCard extends StatelessWidget {
                   ),
                   onPressed: () async {
                     if (state.user.ride != null &&
-                        state.user.ride!["riderId"]["userId"]["phone"] != null) {
+                        state.user.ride!["riderId"]["userId"]["phone"] !=
+                            null) {
                       await openPhoneDialer(
                           state.user.ride?["riderId"]['userId']["phone"]);
                     } else {
@@ -397,6 +407,144 @@ class RideStatusCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 24),
+          // Cancel button
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFFFF9800),
+                side: const BorderSide(color: Color(0xFFFF9800)),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: onCancel,
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPendingRideCard() {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(20, 40, 20, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.search,
+            color: kPrimaryColor,
+            size: 48,
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Finding Driver...',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Please wait while we find a driver for you',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          const CircularProgressIndicator(color: kPrimaryColor),
+          const SizedBox(height: 24),
+          // Cancel button
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFFFF9800),
+                side: const BorderSide(color: Color(0xFFFF9800)),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: onCancel,
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDefaultRideCard(String? status) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(20, 40, 20, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.directions_car,
+            color: kPrimaryColor,
+            size: 48,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Ride Status: ${status?.toUpperCase() ?? 'UNKNOWN'}',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Your ride is being processed',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
           // Cancel button

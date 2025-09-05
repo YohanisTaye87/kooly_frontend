@@ -336,7 +336,7 @@ class _SellerScreenState extends State<SellerScreen> {
                               DropdownButtonFormField<ProductStatus>(
                                 decoration:
                                     const InputDecoration(labelText: 'Status'),
-                                initialValue: status,
+                                value: status,
                                 items: ProductStatus.values
                                     .map((ProductStatus status) {
                                   return DropdownMenuItem<ProductStatus>(
@@ -352,7 +352,7 @@ class _SellerScreenState extends State<SellerScreen> {
                               DropdownButtonFormField<String>(
                                 decoration: const InputDecoration(
                                     labelText: 'Category'),
-                                initialValue: categoryUpload,
+                                value: categoryUpload,
                                 items: widget.categories.map((String category) {
                                   return DropdownMenuItem<String>(
                                     value: category,
@@ -619,7 +619,7 @@ class _SellerScreenState extends State<SellerScreen> {
                                                   decoration:
                                                       const InputDecoration(
                                                           labelText: 'Status'),
-                                                  initialValue: status,
+                                                  value: status,
                                                   items: ProductStatus.values
                                                       .map((ProductStatus
                                                           status) {

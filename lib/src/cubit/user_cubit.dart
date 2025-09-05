@@ -92,6 +92,38 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  void clearRide() {
+    if (state is UserLoaded) {
+      final currentUser = (state as UserLoaded).user;
+      final updatedUser = User(
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        phone: currentUser.phone,
+        token: currentUser.token,
+        ride: null, // Clear the active ride data
+        rideCompleted: currentUser.rideCompleted,
+      );
+      emit(UserLoaded(updatedUser));
+    }
+  }
+
+  void clearAllRideData() {
+    if (state is UserLoaded) {
+      final currentUser = (state as UserLoaded).user;
+      final updatedUser = User(
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        phone: currentUser.phone,
+        token: currentUser.token,
+        ride: null, // Clear the active ride data
+        rideCompleted: null, // Clear the completed ride data
+      );
+      emit(UserLoaded(updatedUser));
+    }
+  }
+
   @override
   Future<void> close() {
     _timer?.cancel();
