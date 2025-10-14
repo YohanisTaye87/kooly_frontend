@@ -4,6 +4,7 @@ import 'package:koooly_app/src/views/home/home_screen.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:koooly_app/src/views/home/menu_drawer.dart';
 import 'package:koooly_app/src/views/home/wallet_screen.dart';
+import 'package:koooly_app/src/views/market/market_page.dart';
 
 class MainHome extends StatefulWidget {
   final int screen;
@@ -100,7 +101,17 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
       _selectedTypeIndex = index;
     });
 
-    // Update the home screen with new type
+    // If market tab (shopping bag) is selected, navigate to market screen
+    if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const MarketPage(),
+        ),
+      );
+      return;
+    }
+
+    // Update the home screen with new type for car and motorcycle
     if (currentScreen == 0) {
       // Refresh home screen with new type
       setState(() {
@@ -150,14 +161,6 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildVerticalDivider() {
-    return Container(
-      width: 1.5,
-      height: double.infinity,
-      color: const Color(0xFFC0C0C0),
     );
   }
 

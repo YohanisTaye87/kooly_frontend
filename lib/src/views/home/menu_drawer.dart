@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_profile_screen.dart';
 import 'wallet_screen.dart';
 import '../login/login_screen.dart';
+import '../market/market_page.dart';
 import '../../cubit/user_cubit.dart';
 import '../../cubit/user_state.dart';
 
@@ -17,7 +18,7 @@ class MenuDrawer extends StatelessWidget {
         if (state is UserLoaded) {
           userName = state.user.name ?? 'User';
         }
-        
+
         return Drawer(
           child: Column(
             children: [
@@ -28,41 +29,55 @@ class MenuDrawer extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Welcome', style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Lora')),
+                    const Text('Welcome',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Lora')),
                     const SizedBox(height: 4),
-                    Text(userName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18, fontFamily: 'Lora')),
+                    Text(userName,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            fontFamily: 'Lora')),
                   ],
                 ),
               ),
-          const SizedBox(height: 24),
-          _buildMenuItem(context, Icons.account_balance_wallet, 'wallet'),
-          _buildMenuItem(context, Icons.card_giftcard, 'My referral'),
-          _buildMenuItem(context, Icons.settings, 'Setting'),
-          _buildMenuItem(context, Icons.help, 'Help'),
-          const Spacer(),
-          const Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 18.0),
-            child: Center(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop(); // Close the drawer
-                  Future.delayed(const Duration(milliseconds: 250), () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    );
-                  });
-                },
-                child: const Text(
-                  'Logout',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, fontFamily: 'Lora'),
+              const SizedBox(height: 24),
+              _buildMenuItem(context, Icons.store, 'Marketplace'),
+              _buildMenuItem(context, Icons.account_balance_wallet, 'wallet'),
+              _buildMenuItem(context, Icons.card_giftcard, 'My referral'),
+              _buildMenuItem(context, Icons.settings, 'Setting'),
+              _buildMenuItem(context, Icons.help, 'Help'),
+              const Spacer(),
+              const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18.0),
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop(); // Close the drawer
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      });
+                    },
+                    child: const Text(
+                      'Logout',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          fontFamily: 'Lora'),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
       },
     );
   }
@@ -76,7 +91,8 @@ class MenuDrawer extends StatelessWidget {
             Navigator.of(context).pop(); // Close the drawer
             Future.delayed(const Duration(milliseconds: 250), () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const UserProfilePage()),
+                MaterialPageRoute(
+                    builder: (context) => const UserProfilePage()),
               );
             });
           } else if (label == 'wallet') {
@@ -84,6 +100,13 @@ class MenuDrawer extends StatelessWidget {
             Future.delayed(const Duration(milliseconds: 250), () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const WalletScreen()),
+              );
+            });
+          } else if (label == 'Marketplace') {
+            Navigator.of(context).pop();
+            Future.delayed(const Duration(milliseconds: 250), () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const MarketPage()),
               );
             });
           }
@@ -94,19 +117,12 @@ class MenuDrawer extends StatelessWidget {
             const SizedBox(width: 18),
             Text(
               label,
-              style: const TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Lora'),
+              style: const TextStyle(
+                  fontSize: 16, color: Colors.black, fontFamily: 'Lora'),
             ),
           ],
         ),
       ),
     );
   }
-
-  BuildContext _getContext() {
-    // This is a workaround to get the context for navigation from the drawer
-    // In a real app, consider using a callback or context from the parent
-    return navigatorKey.currentContext!;
-  }
 }
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(); 

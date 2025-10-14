@@ -21,10 +21,10 @@ class _DeliveryInfoScreenState extends State<DeliveryInfoScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black, size: 24 * scale),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back, color: Colors.black, size: 24 * scale),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
         title: Text(
           'Personal information',
           style: TextStyle(
