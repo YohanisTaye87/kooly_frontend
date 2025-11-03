@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koooly_app/src/views/home/finaldelivery_screen.dart';
+import 'package:koooly_app/src/views/home/trip_ending_screen.dart';
 
 class AcceptedScreen extends StatelessWidget {
   const AcceptedScreen({super.key});
@@ -40,7 +41,8 @@ class AcceptedScreen extends StatelessWidget {
                   ],
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.chevron_left, color: Colors.grey[700], size: 28),
+                  icon: Icon(Icons.chevron_left,
+                      color: Colors.grey[700], size: 28),
                   onPressed: () => Navigator.of(context).pop(),
                   tooltip: 'Back',
                 ),
@@ -63,7 +65,8 @@ class AcceptedScreen extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24 * scale)),
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(24 * scale)),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -71,7 +74,8 @@ class AcceptedScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              padding: EdgeInsets.fromLTRB(20 * scale, 10 * scale, 20 * scale, 24 * scale),
+              padding: EdgeInsets.fromLTRB(
+                  20 * scale, 10 * scale, 20 * scale, 24 * scale),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -80,7 +84,8 @@ class AcceptedScreen extends StatelessWidget {
                     child: Container(
                       width: 40 * scale,
                       height: 5 * scale,
-                      margin: EdgeInsets.only(bottom: 18 * scale, top: 6 * scale),
+                      margin:
+                          EdgeInsets.only(bottom: 18 * scale, top: 6 * scale),
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(10 * scale),
@@ -124,9 +129,17 @@ class AcceptedScreen extends StatelessWidget {
                   SizedBox(height: 6 * scale),
                   Row(
                     children: [
-                      Text('10 min', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale, color: const Color(0xFF757575))),
+                      Text('10 min',
+                          style: TextStyle(
+                              fontFamily: 'Lora',
+                              fontSize: 14 * scale,
+                              color: const Color(0xFF757575))),
                       SizedBox(width: 16 * scale),
-                      Text('Grey', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale, color: const Color(0xFF757575))),
+                      Text('Grey',
+                          style: TextStyle(
+                              fontFamily: 'Lora',
+                              fontSize: 14 * scale,
+                              color: const Color(0xFF757575))),
                     ],
                   ),
                   SizedBox(height: 18 * scale),
@@ -135,18 +148,28 @@ class AcceptedScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 22 * scale,
-                        backgroundImage: const AssetImage('lib/assets/driver_avatar.png'),
+                        backgroundImage:
+                            const AssetImage('lib/assets/driver_avatar.png'),
                       ),
                       SizedBox(width: 12 * scale),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Leul Damtew', style: TextStyle(fontFamily: 'Lora', fontWeight: FontWeight.bold, fontSize: 16 * scale)),
+                          Text('Leul Damtew',
+                              style: TextStyle(
+                                  fontFamily: 'Lora',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16 * scale)),
                           Row(
                             children: [
-                              Icon(Icons.star, color: const Color(0xFFFF9800), size: 16 * scale),
+                              Icon(Icons.star,
+                                  color: const Color(0xFFFF9800),
+                                  size: 16 * scale),
                               SizedBox(width: 4 * scale),
-                              Text('4.2', style: TextStyle(fontFamily: 'Lora', fontSize: 14 * scale)),
+                              Text('4.2',
+                                  style: TextStyle(
+                                      fontFamily: 'Lora',
+                                      fontSize: 14 * scale)),
                             ],
                           ),
                         ],
@@ -158,7 +181,8 @@ class AcceptedScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8 * scale),
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.phone, color: Colors.white, size: 22 * scale),
+                          icon: Icon(Icons.phone,
+                              color: Colors.white, size: 22 * scale),
                           onPressed: () {},
                         ),
                       ),
@@ -202,4 +226,4 @@ class AcceptedScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

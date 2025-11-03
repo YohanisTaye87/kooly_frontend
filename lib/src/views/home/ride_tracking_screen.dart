@@ -158,6 +158,127 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
     }
   }
 
+  Future<void> _submitRatingFromTracking(UserLoaded state) async {
+    print("🚀 [RATING] Starting rating submission from tracking screen");
+    print("🚀 [RATING] Current rating: $_rating");
+    print("🚀 [RATING] Ride completed data: ${state.user.rideCompleted}");
+
+    if (_rating == 0) {
+      print("❌ [RATING] No rating selected, showing error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a rating'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    print("✅ [RATING] Rating validation passed, submitting rating");
+
+    try {
+      final userCubit = context.read<UserCubit>();
+      final currentState = userCubit.state;
+      String? token;
+
+      if (currentState is UserLoaded) {
+        token = currentState.user.token;
+        print("✅ [RATING] Token obtained: ${token?.substring(0, 20)}...");
+      } else {
+        print("❌ [RATING] User not loaded, no token available");
+        return;
+      }
+
+      final ratingData = {
+        "rating": _rating,
+        "feedback": "", // No feedback field in tracking screen
+      };
+
+      print("📤 [RATING] Preparing API request:");
+      print(
+          "📤 [RATING] URL: http://$kPrimaryBaseUrl/api/rideRequest/${state.user.rideCompleted!['_id']}/rating");
+      print("📤 [RATING] Data: ${jsonEncode(ratingData)}");
+      print(
+          "📤 [RATING] Headers: Content-Type: application/json, Authorization: Bearer ${token?.substring(0, 20)}...");
+
+      final response = await dio.put(
+        "http://$kPrimaryBaseUrl/api/rideRequest/${state.user.rideCompleted!['_id']}/rating",
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": "Bearer $token"
+          },
+        ),
+        data: jsonEncode(ratingData),
+      );
+
+      print("📥 [RATING] API Response received:");
+      print("📥 [RATING] Status Code: ${response.statusCode}");
+      print("📥 [RATING] Response Data: ${response.data}");
+      print("📥 [RATING] Response Headers: ${response.headers}");
+
+      if (response.statusCode == 200) {
+        print("✅ [RATING] Rating submitted successfully!");
+        print(
+            "🏠 [RATING] Clearing ride data and navigating to address screen");
+
+        if (mounted) {
+          setState(() {
+            ridecompleted = false;
+          });
+
+          await cache.saveLastCompletedId(state.user.rideCompleted!['_id']);
+
+          context.read<UserCubit>().clearAllRideData();
+
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const AddressScreen(),
+              transitionDuration: const Duration(milliseconds: 150),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
+        }
+      } else {
+        print("❌ [RATING] API returned non-200 status: ${response.statusCode}");
+        print("❌ [RATING] Response: ${response.data}");
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Rating submission failed. Status: ${response.statusCode}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print("💥 [RATING] Exception occurred during rating submission:");
+      print("💥 [RATING] Error type: ${e.runtimeType}");
+      print("💥 [RATING] Error message: $e");
+      if (e is DioException) {
+        print("💥 [RATING] DioException details:");
+        print("💥 [RATING] Response: ${e.response?.data}");
+        print("💥 [RATING] Status Code: ${e.response?.statusCode}");
+        print("💥 [RATING] Request Options: ${e.requestOptions.uri}");
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to submit rating: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Future<int?> _cancelRide(String rideId, String token) async {
     try {
       final response = await dio.put(
@@ -477,6 +598,12 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
     final driverRating =
         state.user.ride?['driverInfo']?['rating']?.toString() ?? '4.5';
 
+    // Additional driver information
+    final carColor = state.user.ride?['driverInfo']?['carColor'] ?? 'Unknown';
+    final carModel = state.user.ride?['driverInfo']?['carModel'] ?? 'Unknown';
+    final carPlate = state.user.ride?['driverInfo']?['carPlate'] ?? 'Unknown';
+    final driverStatus = state.user.ride?['driverInfo']?['status'] ?? 'Unknown';
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -539,6 +666,85 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
               ],
             ),
           ],
+        ),
+
+        // Additional driver details
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[200]!),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Driver Details',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Car Information
+              Row(
+                children: [
+                  const Icon(Icons.directions_car,
+                      size: 20, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '$carColor $carModel',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              // License Plate
+              Row(
+                children: [
+                  const Icon(Icons.credit_card, size: 20, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Plate: $carPlate',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              // Driver Status
+              Row(
+                children: [
+                  const Icon(Icons.circle, size: 20, color: Colors.green),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Status: $driverStatus',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 20),
 
@@ -624,6 +830,14 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
         state.user.ride?['riderId']?['userId']?['name'] ?? 'Driver';
     final vehicleType =
         state.user.ride?['driverInfo']?['carType']?['vehicleType'] ?? 'Vehicle';
+    final driverRating =
+        state.user.ride?['driverInfo']?['rating']?.toString() ?? '4.5';
+
+    // Additional driver information
+    final carColor = state.user.ride?['driverInfo']?['carColor'] ?? 'Unknown';
+    final carModel = state.user.ride?['driverInfo']?['carModel'] ?? 'Unknown';
+    final carPlate = state.user.ride?['driverInfo']?['carPlate'] ?? 'Unknown';
+    final driverStatus = state.user.ride?['driverInfo']?['status'] ?? 'Unknown';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -668,7 +882,104 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                 ],
               ),
             ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                  size: 16,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  driverRating,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
           ],
+        ),
+
+        // Additional driver details
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[200]!),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Driver Details',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Car Information
+              Row(
+                children: [
+                  const Icon(Icons.directions_car,
+                      size: 20, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '$carColor $carModel',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              // License Plate
+              Row(
+                children: [
+                  const Icon(Icons.credit_card, size: 20, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Plate: $carPlate',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              // Driver Status
+              Row(
+                children: [
+                  const Icon(Icons.circle, size: 20, color: Colors.green),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Status: $driverStatus',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF757575),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 20),
 
@@ -1094,9 +1405,13 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                                       const EdgeInsets.symmetric(horizontal: 4),
                                   child: GestureDetector(
                                     onTap: () {
+                                      print(
+                                          "⭐ [RATING] Star ${index + 1} tapped in tracking screen, setting rating to ${index + 1}");
                                       setState(() {
                                         _rating = index + 1;
                                       });
+                                      print(
+                                          "⭐ [RATING] Current rating updated to: $_rating");
                                     },
                                     child: Icon(
                                       Icons.star,
@@ -1126,43 +1441,15 @@ class _RideTrackingScreenState extends State<RideTrackingScreen> {
                                   onTap: () async {
                                     if (!mounted) return;
 
-                                    setState(() {
-                                      ridecompleted = false;
-                                    });
+                                    print(
+                                        "🔘 [RATING] Rate button pressed in ride completion screen");
+                                    print(
+                                        "🔘 [RATING] Current rating: $_rating");
+                                    print(
+                                        "🔘 [RATING] Ride completed data: ${state.user.rideCompleted}");
 
-                                    try {
-                                      await cache.saveLastCompletedId(
-                                          state.user.rideCompleted!['_id']);
-
-                                      if (mounted && context.mounted) {
-                                        context
-                                            .read<UserCubit>()
-                                            .clearAllRideData();
-
-                                        // Navigate to address screen for new ride
-                                        Navigator.pushReplacement(
-                                          context,
-                                          PageRouteBuilder(
-                                            pageBuilder: (context, animation,
-                                                    secondaryAnimation) =>
-                                                const AddressScreen(),
-                                            transitionDuration: const Duration(
-                                                milliseconds: 150),
-                                            transitionsBuilder: (context,
-                                                animation,
-                                                secondaryAnimation,
-                                                child) {
-                                              return FadeTransition(
-                                                  opacity: animation,
-                                                  child: child);
-                                            },
-                                          ),
-                                        );
-                                      }
-                                    } catch (e) {
-                                      debugPrint(
-                                          'Error handling rate button: $e');
-                                    }
+                                    // Submit rating directly from tracking screen
+                                    await _submitRatingFromTracking(state);
                                   },
                                   borderRadius: BorderRadius.circular(8),
                                   child: const Center(

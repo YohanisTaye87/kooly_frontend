@@ -38,13 +38,31 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
   ));
 
   @override
+  void initState() {
+    super.initState();
+    print("🏁 [RATING] TripEndingScreen initialized");
+    print("🏁 [RATING] Ride data: ${widget.rideData}");
+    print("🏁 [RATING] Pickup address: ${widget.pickupAddress}");
+    print("🏁 [RATING] Dropoff address: ${widget.dropOffAddress}");
+    print("🏁 [RATING] Total distance: ${widget.totalDistance}");
+    print("🏁 [RATING] Time taken: ${widget.timeTaken}");
+    print("🏁 [RATING] Initial rating: $_rating");
+  }
+
+  @override
   void dispose() {
+    print("🏁 [RATING] TripEndingScreen disposed");
     _feedbackController.dispose();
     super.dispose();
   }
 
   Future<void> _submitRating() async {
+    print("🚀 [RATING] Starting rating submission process");
+    print("🚀 [RATING] Current rating: $_rating");
+    print("🚀 [RATING] Feedback text: '${_feedbackController.text.trim()}'");
+
     if (_rating == 0) {
+      print("❌ [RATING] No rating selected, showing error");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please select a rating'),
@@ -54,35 +72,55 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
       return;
     }
 
+    print("✅ [RATING] Rating validation passed, setting loading state");
     setState(() {
       _isSubmitting = true;
     });
 
     try {
+      print("🔍 [RATING] Getting user token from UserCubit");
       final userCubit = context.read<UserCubit>();
       final currentState = userCubit.state;
       String? token;
-      
+
       if (currentState is UserLoaded) {
         token = currentState.user.token;
+        print("✅ [RATING] Token obtained: ${token?.substring(0, 20)}...");
+      } else {
+        print("❌ [RATING] User not loaded, no token available");
       }
 
-      final response = await dio.post(
-        "http://$kPrimaryBaseUrl/api/ride/rating",
+      final ratingData = {
+        "rating": _rating,
+        "feedback": _feedbackController.text.trim(),
+      };
+
+      print("📤 [RATING] Preparing API request:");
+      print(
+          "📤 [RATING] URL: http://$kPrimaryBaseUrl/api/rideRequest/${widget.rideData['_id']}/rating");
+      print("📤 [RATING] Data: ${jsonEncode(ratingData)}");
+      print(
+          "📤 [RATING] Headers: Content-Type: application/json, Authorization: Bearer ${token?.substring(0, 20)}...");
+
+      final response = await dio.put(
+        "http://$kPrimaryBaseUrl/api/rideRequest/${widget.rideData['_id']}/rating",
         options: Options(
           headers: {
             "Content-Type": "application/json",
             "authorization": "Bearer $token"
           },
         ),
-        data: jsonEncode({
-          "rideId": widget.rideData['_id'],
-          "rating": _rating,
-          "feedback": _feedbackController.text.trim(),
-        }),
+        data: jsonEncode(ratingData),
       );
 
+      print("📥 [RATING] API Response received:");
+      print("📥 [RATING] Status Code: ${response.statusCode}");
+      print("📥 [RATING] Response Data: ${response.data}");
+      print("📥 [RATING] Response Headers: ${response.headers}");
+
       if (response.statusCode == 200) {
+        print("✅ [RATING] Rating submitted successfully!");
+        print("🏠 [RATING] Navigating back to MainHome");
         if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
@@ -101,17 +139,40 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
             (route) => false,
           );
         }
+      } else {
+        print("❌ [RATING] API returned non-200 status: ${response.statusCode}");
+        print("❌ [RATING] Response: ${response.data}");
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Rating submission failed. Status: ${response.statusCode}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     } catch (e) {
+      print("💥 [RATING] Exception occurred during rating submission:");
+      print("💥 [RATING] Error type: ${e.runtimeType}");
+      print("💥 [RATING] Error message: $e");
+      if (e is DioException) {
+        print("💥 [RATING] DioException details:");
+        print("💥 [RATING] Response: ${e.response?.data}");
+        print("💥 [RATING] Status Code: ${e.response?.statusCode}");
+        print("💥 [RATING] Request Options: ${e.requestOptions.uri}");
+      }
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to submit rating. Please try again.'),
+          SnackBar(
+            content: Text('Failed to submit rating: $e'),
             backgroundColor: Colors.red,
           ),
         );
       }
     } finally {
+      print("🔄 [RATING] Cleaning up loading state");
       if (mounted) {
         setState(() {
           _isSubmitting = false;
@@ -126,9 +187,12 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
       children: List.generate(5, (index) {
         return GestureDetector(
           onTap: () {
+            print(
+                "⭐ [RATING] Star ${index + 1} tapped, setting rating to ${index + 1}");
             setState(() {
               _rating = index + 1;
             });
+            print("⭐ [RATING] Current rating updated to: $_rating");
           },
           child: Container(
             padding: const EdgeInsets.all(4),
@@ -147,10 +211,10 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final totalPrice = widget.rideData['totalPrice'] ?? 0.0;
     final driverName = widget.rideData['driver']?['name'] ?? 'Driver';
-    final vehicleType = widget.rideData['selectedCarType']?['vehicleType'] ?? 'Standard';
+    final vehicleType =
+        widget.rideData['selectedCarType']?['vehicleType'] ?? 'Standard';
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -168,8 +232,9 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              const MainHome(),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  const MainHome(),
                           transitionDuration: const Duration(milliseconds: 300),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
@@ -198,7 +263,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                 ],
               ),
               const SizedBox(height: 30),
-              
+
               // Success icon
               Container(
                 width: 80,
@@ -214,7 +279,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Trip details card
               Container(
                 width: double.infinity,
@@ -250,7 +315,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Route info
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +376,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Trip stats
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -379,7 +444,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              
+
               // Rating section
               const Text(
                 'How was your trip?',
@@ -392,7 +457,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
               const SizedBox(height: 16),
               _buildStarRating(),
               const SizedBox(height: 20),
-              
+
               // Feedback text field
               TextField(
                 controller: _feedbackController,
@@ -412,7 +477,7 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                 ),
               ),
               const Spacer(),
-              
+
               // Submit button
               SizedBox(
                 width: double.infinity,
@@ -425,7 +490,16 @@ class _TripEndingScreenState extends State<TripEndingScreen> {
                     ),
                     elevation: 2,
                   ),
-                  onPressed: _isSubmitting ? null : _submitRating,
+                  onPressed: _isSubmitting
+                      ? null
+                      : () {
+                          print("🔘 [RATING] Submit Rating button pressed");
+                          print("🔘 [RATING] Current rating: $_rating");
+                          print(
+                              "🔘 [RATING] Feedback: '${_feedbackController.text.trim()}'");
+                          print("🔘 [RATING] Is submitting: $_isSubmitting");
+                          _submitRating();
+                        },
                   child: _isSubmitting
                       ? const SizedBox(
                           height: 20,
